@@ -54,3 +54,7 @@ bulugen-backend-go
 ├── utils       # 通用的工具         
 └── test        # 一些杂项功能代码
 ```
+
+## Swagger documentation
+
+swagger: /swagger/index.html
