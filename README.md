@@ -1,39 +1,14 @@
 # Bulugen Backend GO
 
-## 初始化项目
+## Use Frameworks
 
-```readme
-// init go project
-go mod init bulugen-backend-go
-
-//设置代理
-go env -w GOPROXY=https://goproxy.io,direct
-
-//安装一些必要的工具
-go get -u -v github.com/stamblerre/gocode@latest
-go get -u -v github.com/uudashr/gopkgs/v2/cmd/gopkgs@latest
-go get -u -v github.com/ramya-rao-a/go-outline@latest
-go get -u -v github.com/acroca/go-symbols@latest
-go get -u -v golang.org/x/tools/cmd/guru@latest
-go get -u -v golang.org/x/tools/cmd/gorename@latest
-go get -u -v github.com/cweill/gotests@latest
-go get -u -v github.com/fatih/gomodifytags@latest
-go get -u -v github.com/josharian/impl@latest
-go get -u -v github.com/davidrjenni/reftools/cmd/fillstruct@latest
-go get -u -v github.com/haya14busa/goplay/cmd/goplay@latest
-go get -u -v github.com/godoctor/godoctor@latest
-go get -u -v github.com/go-delve/delve/cmd/dlv@latest
-go get -u -v github.com/stamblerre/gocode@latest
-go get -u -v github.com/rogpeppe/godef@latest
-go get -u -v github.com/sqs/goreturns@latest
-go get -u -v golang.org/x/lint/golint@latest
-go get -u -v golang.org/x/tools/gopls@latest
-```
-
-```readme
-//测试执行
-go test -v
-```
+* [**Viper**](https://pkg.go.dev/github.com/spf13/viper#section-readme) :A complete configuration solution for Go applications
+* [**Gin**](https://pkg.go.dev/github.com/gin-gonic/gin) :A web framework written in Go
+* [**GinSwagger**](https://pkg.go.dev/github.com/swaggo/gin-swagger#section-readme) :Gin middleware to automatically generate RESTful API documentation with Swagger
+* [**Zap**](https://pkg.go.dev/go.uber.org/zap) :Blazing fast, structured, leveled logging in Go.
+* [**lumberjack**](https://github.com/natefinch/lumberjack) :A Go package for writing logs to rolling files
+* [**Gorm**](https://gorm.io) :A popular Object Relational Mapping (ORM) library for the Go programming language.
+* [**go-redis**](https://pkg.go.dev/github.com/go-redis/redis/v8) :Redis client for Go
 
 ## Directory structure
 

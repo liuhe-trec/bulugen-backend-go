@@ -1,7 +1,17 @@
 mode:
   develop: true
+
 server:
   port: 8090
+
+db:
+  dsn: root:root@tcp(127.0.0.1:10086)/bulugen?charset=utf8mb4&parseTime=True&loc=Local
+  maxIdleConns: 10 #最多空闲链接数
+  maxOpenConns: 10 #最多打开链接数
+
+redis:
+  url: localhost:6379
+
 log:
   MaxSize: 1          # 日志文件最大尺寸(M)
   MaxBackups: 3       #保留旧文件的最大个数
