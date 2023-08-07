@@ -12,6 +12,10 @@ db:
 redis:
   url: localhost:6379
 
+jwt:
+  tokenExpire: 30 # token expired time(minute)
+  signingString: bulugen.go # the key of generate token
+
 log:
   MaxSize: 1          # 日志文件最大尺寸(M)
   MaxBackups: 3       #保留旧文件的最大个数

@@ -5,10 +5,11 @@
 * [**Viper**](https://pkg.go.dev/github.com/spf13/viper#section-readme) :A complete configuration solution for Go applications
 * [**Gin**](https://pkg.go.dev/github.com/gin-gonic/gin) :A web framework written in Go
 * [**GinSwagger**](https://pkg.go.dev/github.com/swaggo/gin-swagger#section-readme) :Gin middleware to automatically generate RESTful API documentation with Swagger
-* [**Zap**](https://pkg.go.dev/go.uber.org/zap) :Blazing fast, structured, leveled logging in Go.
+* [**Zap**](https://pkg.go.dev/go.uber.org/zap) :Blazing fast, structured, leveled logging in Go
 * [**lumberjack**](https://github.com/natefinch/lumberjack) :A Go package for writing logs to rolling files
-* [**Gorm**](https://gorm.io) :A popular Object Relational Mapping (ORM) library for the Go programming language.
+* [**Gorm**](https://gorm.io) :A popular Object Relational Mapping (ORM) library for the Go programming language
 * [**go-redis**](https://pkg.go.dev/github.com/go-redis/redis/v8) :Redis client for Go
+* [**jwt-go**](https://pkg.go.dev/github.com/golang-jwt/jwt/v5) :A go (or 'golang' for search engine friendliness) implementation of JSON Web Tokens
 
 ## Directory structure
 
