@@ -1,18 +1,22 @@
 package api
 
 import (
+	"bulugen-backend-go/service"
 	"bulugen-backend-go/service/dto"
+	"bulugen-backend-go/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
 type UserApi struct {
 	BaseApi
+	Service *service.UserService
 }
 
 func NewUserApi() UserApi {
 	return UserApi{
 		BaseApi: NewBaseApi(),
+		Service: service.NewUserService(),
 	}
 }
 
@@ -30,8 +34,21 @@ func (u UserApi) Login(ctx *gin.Context) {
 	if err := u.BuildRequest(BuildRequestOption{Ctx: ctx, DTO: &iUserLogindto}).GetError(); err != nil {
 		return
 	}
+	iUser, err := u.Service.Login(iUserLogindto)
+	if err != nil {
+		u.Fail(ResponseJson{
+			Msg: err.Error(),
+		})
+		return
+	}
+
+	token, _ := utils.GenerateToken(iUser.ID, iUser.Name)
+
 	// 给前台返回
 	u.OK(ResponseJson{
-		Data: iUserLogindto,
+		Data: gin.H{
+			"token": token,
+			"user":  iUser,
+		},
 	})
 }
