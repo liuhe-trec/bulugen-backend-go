@@ -1,8 +1,6 @@
 package api
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,7 +20,7 @@ func NewUserApi() UserApi {
 // @Failure 401 {string} string true "login failed"
 // @Router /api/v1/public/user/login [post]
 func (m UserApi) Login(ctx *gin.Context) {
-	ctx.AbortWithStatusJSON(http.StatusOK, gin.H{
-		"msg": "login success",
+	OK(ctx, ResponseJson{
+		Msg: "Login Success",
 	})
 }
