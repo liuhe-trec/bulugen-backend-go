@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -12,6 +13,8 @@ import (
 	"bulugen-backend-go/global"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 	"github.com/spf13/viper"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -44,7 +47,13 @@ func InitRouter() {
 	// 定义两个组,public不需要鉴权另一个需要
 	rgPublic := r.Group("/api/v1/public")
 	rgAuth := r.Group("/api/v1")
-	InitBasePlatformRouter()
+	// 初始化平台路由
+	initBasePlatformRouter()
+
+	// 注册自定义验证器
+	registCustValidator()
+
+	// 注册系统各个模块对应的路由信息
 	for _, router := range ginFnRouters {
 		router(rgPublic, rgAuth)
 	}
@@ -79,6 +88,21 @@ func InitRouter() {
 	global.Logger.Info("Stop Server Success")
 }
 
-func InitBasePlatformRouter() {
+func initBasePlatformRouter() {
 	InituserRouter()
+}
+
+// 注册自定义验证器
+func registCustValidator() {
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		v.RegisterValidation("first_is_a", func(fl validator.FieldLevel) bool {
+			if value, ok := fl.Field().Interface().(string); ok {
+				if value != "" && strings.Index(value, "a") == 0 {
+					return true
+				}
+
+			}
+			return false
+		})
+	}
 }
