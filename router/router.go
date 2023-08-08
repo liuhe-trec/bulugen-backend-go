@@ -11,6 +11,7 @@ import (
 
 	_ "bulugen-backend-go/docs"
 	"bulugen-backend-go/global"
+	"bulugen-backend-go/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -42,8 +43,9 @@ func InitRouter() {
 	//优雅的关闭
 	ctx, cancelCtx := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancelCtx()
-
+	// 初始化gin框架
 	r := gin.Default()
+	r.Use(middleware.Cors())
 	// 定义两个组,public不需要鉴权另一个需要
 	rgPublic := r.Group("/api/v1/public")
 	rgAuth := r.Group("/api/v1")
