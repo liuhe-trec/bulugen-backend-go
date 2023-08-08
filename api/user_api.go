@@ -2,20 +2,18 @@ package api
 
 import (
 	"bulugen-backend-go/service/dto"
-	"bulugen-backend-go/utils"
-	"errors"
-	"fmt"
-	"reflect"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 )
 
 type UserApi struct {
+	BaseApi
 }
 
 func NewUserApi() UserApi {
-	return UserApi{}
+	return UserApi{
+		BaseApi: NewBaseApi(),
+	}
 }
 
 // @Tags User management
@@ -26,35 +24,14 @@ func NewUserApi() UserApi {
 // @Success 200 {string} string "login success"
 // @Failure 401 {string} string true "login failed"
 // @Router /api/v1/public/user/login [post]
-func (m UserApi) Login(ctx *gin.Context) {
+func (u UserApi) Login(ctx *gin.Context) {
+	// 参数校验
 	var iUserLogindto dto.UserLoginDTO
-	errs := ctx.ShouldBind(&iUserLogindto)
-	if errs != nil {
-		Fail(ctx, ResponseJson{
-			Msg: parseValidateErrors(errs.(validator.ValidationErrors), &iUserLogindto).Error(),
-		})
+	if err := u.BuildRequest(BuildRequestOption{Ctx: ctx, DTO: &iUserLogindto}).GetError(); err != nil {
 		return
 	}
-	OK(ctx, ResponseJson{
+	// 给前台返回
+	u.OK(ResponseJson{
 		Data: iUserLogindto,
 	})
-}
-
-func parseValidateErrors(errs validator.ValidationErrors, target any) error {
-	var errResult error
-	// 通过反射获取指针指向的元素的类型对象
-	fields := reflect.TypeOf(target).Elem()
-	for _, fieldErr := range errs {
-		field, _ := fields.FieldByName(fieldErr.Field())
-		errMessageTag := fmt.Sprintf("%s_err", fieldErr.Tag())
-		errMessage := field.Tag.Get(errMessageTag)
-		if errMessage == "" {
-			errMessage = field.Tag.Get("message")
-		}
-		if errMessage == "" {
-			errMessage = fmt.Sprint("%S:%S Error", fieldErr.Field(), fieldErr.Tag())
-		}
-		errResult = utils.AppendError(errResult, errors.New(errMessage))
-	}
-	return errResult
 }

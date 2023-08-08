@@ -11,6 +11,10 @@
 * [**go-redis**](https://pkg.go.dev/github.com/go-redis/redis/v8) :Redis client for Go
 * [**jwt-go**](https://pkg.go.dev/github.com/golang-jwt/jwt/v5) :A go (or 'golang' for search engine friendliness) implementation of JSON Web Tokens
 
+## Develop Tools
+
+* [**delve**](https://github.com/go-delve/delve) : for debug
+
 ## Directory structure
 
 ```readme
