@@ -13,7 +13,7 @@ type UserAddDTO struct {
 	ID       uint
 	Name     string `json:"name" form:"name" binding:"required" message:"用户名不能为空"`
 	RealName string `json:"real_name" form:"real_name"`
-	Avatar   string
+	Avatar   string `json:"avatar"`
 	Mobile   string `json:"mobile" form:"mobile"`
 	Email    string `json:"email" form:"email"`
 	Password string `json:"password,omitempty" form:"name" binding:"required" message:"密码不能为空"`
@@ -22,6 +22,7 @@ type UserAddDTO struct {
 func (u *UserAddDTO) ConvertToModel(iUser *model.User) {
 	iUser.Name = u.Name
 	iUser.RealName = u.RealName
+	iUser.Avatar = u.Avatar
 	iUser.Mobile = u.Mobile
 	iUser.Email = u.Email
 	iUser.Password = u.Password

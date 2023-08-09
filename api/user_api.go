@@ -4,6 +4,7 @@ import (
 	"bulugen-backend-go/service"
 	"bulugen-backend-go/service/dto"
 	"bulugen-backend-go/utils"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -66,6 +67,12 @@ func (u UserApi) AddUser(ctx *gin.Context) {
 	if u.BuildRequest(BuildRequestOption{Ctx: ctx, DTO: &iUserAddDTO}).GetError() != nil {
 		return
 	}
+
+	file, _ := ctx.FormFile("file")
+	filePathStr := fmt.Sprintf("./upload/%s", file.Filename)
+	ctx.SaveUploadedFile(file, filePathStr)
+	iUserAddDTO.Avatar = filePathStr
+
 	err := u.Service.AddUser(&iUserAddDTO)
 	if err != nil {
 		u.ServerFail(ResponseJson{
