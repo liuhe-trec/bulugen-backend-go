@@ -26,3 +26,8 @@ func (u *UserAddDTO) ConvertToModel(iUser *model.User) {
 	iUser.Email = u.Email
 	iUser.Password = u.Password
 }
+
+// 用户列表相关DTO
+type UserListDTO struct {
+	PagingDTO
+}

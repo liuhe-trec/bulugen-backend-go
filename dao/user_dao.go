@@ -46,3 +46,10 @@ func (u *UserDao) GetUserByID(id uint) (model.User, error) {
 	err := u.Orm.First(&iUser, id).Error
 	return iUser, err
 }
+
+func (u *UserDao) GetUserList(iUserListDTO *dto.UserListDTO) ([]model.User, int64, error) {
+	var iUserList []model.User
+	var totalNumber int64
+	err := u.Orm.Model(&model.User{}).Scopes(Paging(iUserListDTO.PagingDTO)).Find(&iUserList).Offset(-1).Limit(-1).Count(&totalNumber).Error
+	return iUserList, totalNumber, err
+}

@@ -42,3 +42,7 @@ func (u *UserService) AddUser(iUserAddDTO *dto.UserAddDTO) error {
 func (u *UserService) GetUserByID(iCommonIDDTO *dto.CommonIDDTO) (model.User, error) {
 	return u.Dao.GetUserByID(iCommonIDDTO.ID)
 }
+
+func (u *UserService) GetUserList(iUserListDTO *dto.UserListDTO) ([]model.User, int64, error) {
+	return u.Dao.GetUserList(iUserListDTO)
+}

@@ -11,6 +11,7 @@ import (
 const (
 	ERR_CODE_ADD_USER       = 10011
 	ERR_CODE_GET_USER_BY_ID = 10012
+	ERR_CODE_GET_USER_LIST  = 10013
 )
 
 type UserApi struct {
@@ -92,5 +93,23 @@ func (u UserApi) GetUserByID(ctx *gin.Context) {
 	}
 	u.OK(ResponseJson{
 		Data: iUser,
+	})
+}
+
+func (u UserApi) GetUserList(ctx *gin.Context) {
+	var iUserListDTO dto.UserListDTO
+	if u.BuildRequest(BuildRequestOption{Ctx: ctx, DTO: &iUserListDTO}).GetError() != nil {
+		return
+	}
+	iUserList, totalNumber, err := u.Service.GetUserList(&iUserListDTO)
+	if err != nil {
+		u.ServerFail(ResponseJson{
+			Code: ERR_CODE_GET_USER_LIST,
+			Msg:  err.Error(),
+		})
+	}
+	u.OK(ResponseJson{
+		Data:  iUserList,
+		Total: totalNumber,
 	})
 }
