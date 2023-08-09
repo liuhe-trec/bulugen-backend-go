@@ -13,6 +13,7 @@ const (
 	ERR_CODE_GET_USER_BY_ID = 10012
 	ERR_CODE_GET_USER_LIST  = 10013
 	ERR_CODE_UPDATA_USER    = 10014
+	ERR_CODE_DEL_USER       = 10015
 )
 
 type UserApi struct {
@@ -131,6 +132,22 @@ func (u UserApi) UpdateUser(ctx *gin.Context) {
 			Code: ERR_CODE_UPDATA_USER,
 			Msg:  err.Error(),
 		})
+	}
+	u.OK(ResponseJson{})
+}
+
+func (u UserApi) DeleteUserById(ctx *gin.Context) {
+	var iCommonIDDTO dto.CommonIDDTO
+	if u.BuildRequest(BuildRequestOption{Ctx: ctx, DTO: &iCommonIDDTO, BindParamsFromUri: true}).GetError() != nil {
+		return
+	}
+	err := u.Service.DeleteUserById(&iCommonIDDTO)
+	if err != nil {
+		u.ServerFail(ResponseJson{
+			Code: ERR_CODE_DEL_USER,
+			Msg:  err.Error(),
+		})
+		return
 	}
 	u.OK(ResponseJson{})
 }

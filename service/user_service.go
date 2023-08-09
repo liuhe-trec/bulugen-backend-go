@@ -54,3 +54,7 @@ func (u *UserService) UpdateUser(iUpdateUserDTO *dto.UpdateUserDTO) error {
 	//根据不同业务场景有追加不同的业务逻辑判断
 	return u.Dao.UpdateUser(iUpdateUserDTO)
 }
+
+func (u *UserService) DeleteUserById(iCommonIDDTO *dto.CommonIDDTO) error {
+	return u.Dao.DeleteUserById(iCommonIDDTO.ID)
+}
