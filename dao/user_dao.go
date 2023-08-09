@@ -40,3 +40,9 @@ func (u *UserDao) AddUser(iUserAddDTO *dto.UserAddDTO) error {
 	}
 	return err
 }
+
+func (u *UserDao) GetUserByID(id uint) (model.User, error) {
+	var iUser model.User
+	err := u.Orm.First(&iUser, id).Error
+	return iUser, err
+}

@@ -9,7 +9,8 @@ import (
 )
 
 const (
-	ERR_CODE_ADD_USER = 10011
+	ERR_CODE_ADD_USER       = 10011
+	ERR_CODE_GET_USER_BY_ID = 10012
 )
 
 type UserApi struct {
@@ -74,4 +75,22 @@ func (u UserApi) AddUser(ctx *gin.Context) {
 		Data: iUserAddDTO,
 	})
 
+}
+
+func (u UserApi) GetUserByID(ctx *gin.Context) {
+	var iCommonIDDTO dto.CommonIDDTO
+	if u.BuildRequest(BuildRequestOption{Ctx: ctx, DTO: &iCommonIDDTO, BindParamsFromUri: true}).GetError() != nil {
+		return
+	}
+	iUser, err := u.Service.GetUserByID(&iCommonIDDTO)
+	if err != nil {
+		u.ServerFail(ResponseJson{
+			Code: ERR_CODE_GET_USER_BY_ID,
+			Msg:  err.Error(),
+		})
+		return
+	}
+	u.OK(ResponseJson{
+		Data: iUser,
+	})
 }

@@ -17,6 +17,7 @@ func InituserRouter() {
 		rgAuthUser := rgAuth.Group("user")
 		{
 			rgAuthUser.POST("", userApi.AddUser)
+			rgAuthUser.GET("/:id", userApi.GetUserByID)
 		}
 	})
 }
