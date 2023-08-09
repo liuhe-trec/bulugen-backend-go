@@ -46,3 +46,11 @@ func (u *UserService) GetUserByID(iCommonIDDTO *dto.CommonIDDTO) (model.User, er
 func (u *UserService) GetUserList(iUserListDTO *dto.UserListDTO) ([]model.User, int64, error) {
 	return u.Dao.GetUserList(iUserListDTO)
 }
+
+func (u *UserService) UpdateUser(iUpdateUserDTO *dto.UpdateUserDTO) error {
+	if iUpdateUserDTO.ID == 0 {
+		return errors.New("invalid user id")
+	}
+	//根据不同业务场景有追加不同的业务逻辑判断
+	return u.Dao.UpdateUser(iUpdateUserDTO)
+}

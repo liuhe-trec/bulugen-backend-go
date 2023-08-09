@@ -12,6 +12,7 @@ const (
 	ERR_CODE_ADD_USER       = 10011
 	ERR_CODE_GET_USER_BY_ID = 10012
 	ERR_CODE_GET_USER_LIST  = 10013
+	ERR_CODE_UPDATA_USER    = 10014
 )
 
 type UserApi struct {
@@ -112,4 +113,24 @@ func (u UserApi) GetUserList(ctx *gin.Context) {
 		Data:  iUserList,
 		Total: totalNumber,
 	})
+}
+
+func (u UserApi) UpdateUser(ctx *gin.Context) {
+	var iUpdateUserDTO dto.UpdateUserDTO
+	// 可以自己从请求参数中取值
+	// strId := ctx.Param("id")
+	// id, _ := strconv.Atoi(strId)
+	// uid := uint(id)
+	// iUpdateUserDTO.ID = uid
+	if u.BuildRequest(BuildRequestOption{Ctx: ctx, DTO: &iUpdateUserDTO, BindAll: true}).GetError() != nil {
+		return
+	}
+	err := u.Service.UpdateUser(&iUpdateUserDTO)
+	if err != nil {
+		u.ServerFail(ResponseJson{
+			Code: ERR_CODE_UPDATA_USER,
+			Msg:  err.Error(),
+		})
+	}
+	u.OK(ResponseJson{})
 }

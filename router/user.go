@@ -19,6 +19,7 @@ func InituserRouter() {
 			rgAuthUser.POST("", userApi.AddUser)
 			rgAuthUser.GET("/:id", userApi.GetUserByID)
 			rgAuthUser.POST("/list", userApi.GetUserList)
+			rgAuthUser.PUT("/:id", userApi.UpdateUser)
 		}
 	})
 }
