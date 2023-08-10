@@ -45,10 +45,13 @@ func InitRouter() {
 	defer cancelCtx()
 	// 初始化gin框架
 	r := gin.Default()
+	// 跨域问题中间件
 	r.Use(middleware.Cors())
 	// 定义两个组,public不需要鉴权另一个需要
 	rgPublic := r.Group("/api/v1/public")
 	rgAuth := r.Group("/api/v1")
+	// 添加鉴权中间件
+	rgAuth.Use(middleware.Auth())
 	// 初始化平台路由
 	initBasePlatformRouter()
 

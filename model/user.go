@@ -27,3 +27,9 @@ func (u *User) Encrypt() error {
 func (u *User) BeforeCreate(orm *gorm.DB) error {
 	return u.Encrypt()
 }
+
+// 用户登录信息
+type LoginUser struct {
+	ID   uint
+	Name string
+}
