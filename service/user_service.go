@@ -2,9 +2,18 @@ package service
 
 import (
 	"bulugen-backend-go/dao"
+	"bulugen-backend-go/global"
+	"bulugen-backend-go/global/constants"
 	"bulugen-backend-go/model"
 	"bulugen-backend-go/service/dto"
+	"bulugen-backend-go/utils"
 	"errors"
+	"fmt"
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/spf13/viper"
 )
 
 var userService *UserService
@@ -23,13 +32,24 @@ func NewUserService() *UserService {
 	return userService
 }
 
-func (u *UserService) Login(iUserDto dto.UserLoginDTO) (model.User, error) {
+func SetLoginUserTokenToRedis(uid uint, token string) error {
+	return global.RedisClient.Set(strings.Replace(constants.LOGIN_USER_TOKEN_REDIS_KEY, "{ID}", strconv.Itoa(int(uid)), -1), token, viper.GetDuration("jwt.tokenExpire")*time.Minute)
+}
+
+func (u *UserService) Login(iUserDto dto.UserLoginDTO) (model.User, string, error) {
 	var errResult error
-	iUser := u.Dao.GetUserByNameAndPassword(iUserDto.Name, iUserDto.Password)
-	if iUser.ID == 0 {
+	var token = ""
+	iUser, err := u.Dao.GetUserByName(iUserDto.Name)
+	// 用户名或密码不正确
+	if err != nil || !utils.CompareHashAndPassword(iUser.Password, iUserDto.Password) {
 		errResult = errors.New("invalid username or password")
+	} else { // 登录成功,生成token
+		token, err = utils.GenerateToken(iUser.ID, iUser.Name)
+		if err != nil {
+			errResult = fmt.Errorf("generate token error: %w", err)
+		}
 	}
-	return iUser, errResult
+	return iUser, token, errResult
 }
 
 func (u *UserService) AddUser(iUserAddDTO *dto.UserAddDTO) error {

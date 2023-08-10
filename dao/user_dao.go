@@ -18,6 +18,12 @@ func NewUserDao() *UserDao {
 	return userDao
 }
 
+func (u *UserDao) GetUserByName(userName string) (model.User, error) {
+	var iUser model.User
+	err := u.Orm.Model(&iUser).Where("name = ?", userName).Find(&iUser).Error
+	return iUser, err
+}
+
 func (u *UserDao) GetUserByNameAndPassword(userName, password string) model.User {
 	var iUser model.User
 	u.Orm.Model(&iUser).Where("name=? and password=?", userName, password).Find(&iUser)

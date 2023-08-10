@@ -3,8 +3,7 @@ package api
 import (
 	"bulugen-backend-go/service"
 	"bulugen-backend-go/service/dto"
-	"bulugen-backend-go/utils"
-	"fmt"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,6 +14,7 @@ const (
 	ERR_CODE_GET_USER_LIST  = 10013
 	ERR_CODE_UPDATA_USER    = 10014
 	ERR_CODE_DEL_USER       = 10015
+	ERR_CODE_USER_LOGIN     = 10016
 )
 
 type UserApi struct {
@@ -43,15 +43,18 @@ func (u UserApi) Login(ctx *gin.Context) {
 	if err := u.BuildRequest(BuildRequestOption{Ctx: ctx, DTO: &iUserLogindto}).GetError(); err != nil {
 		return
 	}
-	iUser, err := u.Service.Login(iUserLogindto)
+	iUser, token, err := u.Service.Login(iUserLogindto)
+	if err == nil {
+		err = service.SetLoginUserTokenToRedis(iUser.ID, token)
+	}
 	if err != nil {
 		u.Fail(ResponseJson{
-			Msg: err.Error(),
+			Status: http.StatusUnauthorized,
+			Code:   ERR_CODE_USER_LOGIN,
+			Msg:    err.Error(),
 		})
 		return
 	}
-
-	token, _ := utils.GenerateToken(iUser.ID, iUser.Name)
 
 	// 给前台返回
 	u.OK(ResponseJson{
@@ -68,10 +71,11 @@ func (u UserApi) AddUser(ctx *gin.Context) {
 		return
 	}
 
-	file, _ := ctx.FormFile("file")
-	filePathStr := fmt.Sprintf("./upload/%s", file.Filename)
-	ctx.SaveUploadedFile(file, filePathStr)
-	iUserAddDTO.Avatar = filePathStr
+	// 头像处理
+	// file, _ := ctx.FormFile("file")
+	// filePathStr := fmt.Sprintf("./upload/%s", file.Filename)
+	// ctx.SaveUploadedFile(file, filePathStr)
+	// iUserAddDTO.Avatar = filePathStr
 
 	err := u.Service.AddUser(&iUserAddDTO)
 	if err != nil {

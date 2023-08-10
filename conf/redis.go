@@ -9,7 +9,7 @@ import (
 )
 
 var redisClient *redis.Client
-var expiredTime = 30 * 24 * 60 * 60 * time.Second
+var DEFAULT_DURATION = 30 * 24 * 60 * 60 * time.Second
 
 type RedisClient struct{}
 
@@ -26,8 +26,14 @@ func InitRedis() (*RedisClient, error) {
 	return &RedisClient{}, nil
 }
 
-func (rc *RedisClient) Set(key string, value any) error {
-	return redisClient.Set(context.Background(), key, value, expiredTime).Err()
+func (rc *RedisClient) Set(key string, value any, rest ...any) error {
+	d := DEFAULT_DURATION
+	if len(rest) > 0 {
+		if v, ok := rest[0].(time.Duration); ok {
+			d = v
+		}
+	}
+	return redisClient.Set(context.Background(), key, value, d).Err()
 }
 
 func (rc *RedisClient) Get(key string) (any, error) {

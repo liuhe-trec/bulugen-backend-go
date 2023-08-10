@@ -13,7 +13,7 @@ redis:
   url: localhost:6379
 
 jwt:
-  tokenExpire: 30 # token expired time(minute)
+  tokenExpire: 1 # token expired time(minute)
   signingString: bulugen.go # the key of generate token
 
 log:
